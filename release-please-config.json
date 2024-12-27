@@ -6,6 +6,9 @@
     },
     "cmd/two": {
       "package-name": "two"
+    },
+    "cmd/three": {
+      "package-name": "three"
     }
   }
 }
