@@ -19,4 +19,4 @@ jobs:
       - name: print outputs
         run: node index.js
         env:
-          RELEASE_PLEASE: ${{ steps.release-please.outputs }}
+          RELEASE_PLEASE: ${{ toJSON(steps.release-please.outputs) }}
