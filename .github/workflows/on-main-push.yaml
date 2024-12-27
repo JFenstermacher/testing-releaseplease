@@ -14,4 +14,9 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
       - name: release-please
+        id: release-please
         uses: googleapis/release-please-action@v4
+      - name: print outputs
+        run: node index.js
+        env:
+          RELEASE_PLEASE: ${{ step.release-please.outputs }}
