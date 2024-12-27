@@ -1,0 +1,17 @@
+name: release-please
+
+on:
+  push:
+    branches:
+      - main
+
+permissions: write-all
+
+jobs:
+  releaseplease:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: release-please
+        uses: googleapis/release-please-action@v4

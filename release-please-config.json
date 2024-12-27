@@ -2,10 +2,10 @@
   "release-type": "simple",
   "packages": {
     "cmd/one": {
-      "package-name": "one",
+      "package-name": "one"
     },
     "cmd/two": {
-      "package-name": "two",
+      "package-name": "two"
     }
   }
 }
