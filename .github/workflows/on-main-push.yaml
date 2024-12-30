@@ -8,7 +8,7 @@ on:
 permissions: write-all
 
 jobs:
-  releaseplease:
+  release-please:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -16,7 +16,31 @@ jobs:
       - name: release-please
         id: release-please
         uses: googleapis/release-please-action@v4
+      - name: setup bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
+      - name: setup bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
       - name: print outputs
         run: node index.js
         env:
           RELEASE_PLEASE: ${{ toJSON(steps.release-please.outputs) }}
+    outputs:
+      releases-created: ${{ steps.release-please.outputs.releases_created }}
+      packages: ${{ steps.release-please.outputs.paths_released }}
+
+  # release:
+  #   name: "[${{ matrix.package }}] Release"
+  #   runs-on: ubuntu-latest
+  #   needs: [release-please]
+  #   if: fromJSON(needs.release-please.outputs.releases-created)
+  #   matrix:
+  #     fail-fast: false
+  #     packages: fromJSON(needs.release-please.outputs.packages)
+  #   steps:
+  #     - name: the details
+  #       run: |
+  #         echo "
