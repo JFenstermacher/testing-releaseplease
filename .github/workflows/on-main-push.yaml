@@ -19,7 +19,7 @@ jobs:
 
       - name: testing git
         run: |
-          git diff --name-only HEAD~1 HEAD
+          git diff --name-only main~1 main
 
   # release-please:
   #   runs-on: ubuntu-latest
