@@ -13,9 +13,11 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
+        with:
+          fetch: 0
+
       - name: testing git
         run: |
-          git fetch origin main
           git diff --name-only main~1 main
 
   # release-please:
