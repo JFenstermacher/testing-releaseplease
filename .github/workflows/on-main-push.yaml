@@ -8,18 +8,37 @@ on:
 permissions: write-all
 
 jobs:
-  testing-somethign:
+  test:
+    name: testing action testing
     runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          fetch-depth: 0
+      - name: setup bun
+        uses: oven-sh/setup-bun@v2
+      - name: set first
+        run: bun actions/set-env/index.ts
+        env:
+          TEST_VAR: "1"
+      - name: test output var
+        run: echo "TEST_VAR = ${{ env.TEST_VAR }}"
+      - name: set second
+        run: bun actions/set-env/index.ts
+      - name: test output var
+        run: echo "TEST_VAR = ${{ env.TEST_VAR }}"
 
-      - name: testing git
-        run: |
-          git diff --name-only main~1 main
+  # testing-somethign:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         ref: ${{ github.head_ref }}
+  #         fetch-depth: 0
+  #
+  #     - name: testing git
+  #       run: |
+  #         git diff --name-only main~1 main
 
   # release-please:
   #   runs-on: ubuntu-latest
