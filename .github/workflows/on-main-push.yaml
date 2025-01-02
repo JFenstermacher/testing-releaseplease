@@ -8,29 +8,38 @@ on:
 permissions: write-all
 
 jobs:
-  release-please:
+  testing-somethign:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v4
-      - name: release-please
-        id: release-please
-        uses: googleapis/release-please-action@v4
-      - name: setup bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: .tool-versions
-      - name: setup bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: .tool-versions
-      - name: print outputs
-        run: node index.js
-        env:
-          RELEASE_PLEASE: ${{ toJSON(steps.release-please.outputs) }}
-    outputs:
-      releases-created: ${{ steps.release-please.outputs.releases_created }}
-      packages: ${{ steps.release-please.outputs.paths_released }}
+      - name: testing git
+        run: |
+          git diff --name-only main~1 main
+
+  # release-please:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: checkout
+  #       uses: actions/checkout@v4
+  #     - name: release-please
+  #       id: release-please
+  #       uses: googleapis/release-please-action@v4
+  #     - name: setup bun
+  #       uses: oven-sh/setup-bun@v2
+  #       with:
+  #         bun-version-file: .tool-versions
+  #     - name: setup bun
+  #       uses: oven-sh/setup-bun@v2
+  #       with:
+  #         bun-version-file: .tool-versions
+  #     - name: print outputs
+  #       run: node index.js
+  #       env:
+  #         RELEASE_PLEASE: ${{ toJSON(steps.release-please.outputs) }}
+  #   outputs:
+  #     releases-created: ${{ steps.release-please.outputs.releases_created }}
+  #     packages: ${{ steps.release-please.outputs.paths_released }}
 
   # release:
   #   name: "[${{ matrix.package }}] Release"
