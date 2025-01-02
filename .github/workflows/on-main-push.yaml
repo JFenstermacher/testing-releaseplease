@@ -15,7 +15,8 @@ jobs:
         uses: actions/checkout@v4
       - name: testing git
         run: |
-          git diff --name-only main~1 main
+          git fetch main
+          git diff --name-only HEAD~1 HEAD
 
   # release-please:
   #   runs-on: ubuntu-latest
