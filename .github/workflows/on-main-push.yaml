@@ -18,7 +18,7 @@ jobs:
 
       - name: testing git
         run: |
-          git diff --name-only main~1 main
+          git diff --name-only HEAD~1 HEAD
 
   # release-please:
   #   runs-on: ubuntu-latest
