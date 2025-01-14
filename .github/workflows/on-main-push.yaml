@@ -8,61 +8,28 @@ on:
 permissions: write-all
 
 jobs:
-  test:
-    name: testing action testing
+  release-please:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v4
+      - name: release-please
+        id: release-please
+        uses: googleapis/release-please-action@v4
       - name: setup bun
         uses: oven-sh/setup-bun@v2
-      - name: set first
-        run: bun actions/set-env/index.ts
-        env:
-          TEST_VAR: "1"
-      - name: test output var
-        run: echo "TEST_VAR = ${{ env.TEST_VAR }}"
-      - name: set second
-        run: bun actions/set-env/index.ts
-      - name: test output var
-        run: echo "TEST_VAR = ${{ env.TEST_VAR }}"
-
-  # testing-somethign:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: checkout
-  #       uses: actions/checkout@v4
-  #       with:
-  #         ref: ${{ github.head_ref }}
-  #         fetch-depth: 0
-  #
-  #     - name: testing git
-  #       run: |
-  #         git diff --name-only main~1 main
-
-  # release-please:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: checkout
-  #       uses: actions/checkout@v4
-  #     - name: release-please
-  #       id: release-please
-  #       uses: googleapis/release-please-action@v4
-  #     - name: setup bun
-  #       uses: oven-sh/setup-bun@v2
-  #       with:
-  #         bun-version-file: .tool-versions
-  #     - name: setup bun
-  #       uses: oven-sh/setup-bun@v2
-  #       with:
-  #         bun-version-file: .tool-versions
-  #     - name: print outputs
-  #       run: node index.js
-  #       env:
-  #         RELEASE_PLEASE: ${{ toJSON(steps.release-please.outputs) }}
-  #   outputs:
-  #     releases-created: ${{ steps.release-please.outputs.releases_created }}
-  #     packages: ${{ steps.release-please.outputs.paths_released }}
+        with:
+          bun-version-file: .tool-versions
+      - name: setup bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
+      - name: parse
+        id: parse
+        uses: ./actions/release-matrix
+    outputs:
+      releases-created: ${{ steps.parse.outputs.releases-created }}
+      packages: ${{ steps.release-please.outputs.releases }}
 
   # release:
   #   name: "[${{ matrix.package }}] Release"

@@ -1,0 +1,49 @@
+name: "release-matrix"
+description: |
+  When release-please runs it generates a JSON blob which is poorly structured for next steps.
+  Each path key-value pair is flatten out in the form <path>--<key>: <value>
+
+  Example:
+
+  Assume the following path is being released
+
+    * cmd/awssoh
+
+    ```json
+    {
+      "cmd/awssoh--release_created": "false",
+      "cmd/awssoh--tag_name": "0.1.0",
+      ...
+    }
+    ```
+
+  This structure doesn't lend itself to the release matrix that needs to be generated
+
+  So, this action takes that structure, parses it and returns a more suitable one for use by following job.
+inputs:
+  release-please-outputs:
+    type: string
+    description: Outputs generated from release-please action
+    required: true
+outputs:
+  deployments-needed:
+    description: Terramate deployments needed
+    value: ${{ steps.parse.outputs.deployments-needed }}
+  release-created:
+    description: Release created
+    value: ${{ steps.parse.outputs.release-created }}
+  releases:
+    description: Releases matrix
+    value: ${{ steps.parse.outputs.releases }}
+runs:
+  using: "composite"
+  steps:
+    - name: setup bun
+      uses: oven-sh/setup-bun@v2
+
+    - name: parse release-please inputs
+      id: parse
+      shell: bash
+      run: bun ${GITHUB_ACTION_PATH}/index.ts
+      env:
+        INPUT_RELEASE-PLEASE-OUTPUTS: ${{ inputs.release-please-outputs }}
